@@ -44,24 +44,50 @@ function render(vNode){
 }
 
 function setAttr(el, key, value){
-    //不同类型，处理不同
-    ...
-    else{
-        el.setAttribute(key, value)
-    }
+    el.setAttribute(key, value)
+    //不同类型，处理可能不同，最基本的是setAttribute
 }
+
+//测试渲染虚拟dom方法
+//渲染测试
+    const h = createElement
+    const ul = h('ul', {}, [
+        h('li', {class: 'item'}, ['hello1']),
+        h('li', {class: 'item'}, ['hello2']),
+        h('li', {class: 'item'}, [
+            h('a', {}, ['baidu'])
+        ])
+    ])
+    const root = ul.render()
+    document.body.appendChild(root)
+//测试成功
 
 ```
 
 #### DOM-diff算法
-DOM-diff比较两个虚拟DOM区别， 然后用这个差异来更新DOM!<br/>
-分为两步:<br/>
-1.对比两个DOM标记差异，得到一个补丁；<br/>
-2.对补丁分析，然后更新DOM;<br/>
+dom节点或者结果发生变化，虚拟节点对象形成节点树结构，变化前后是两个树结构，diff就是找出代价最小的转换方法；<br/>
+思路：<br/>
+对新旧两树深度优先遍历，每个节点有唯一id，每遍历一个节点就把差异与原本树此节点进行对比，有差异就记录；<br/>
 ```
-比较规则
-新的DOM节点不存在{type: 'REMOVE', index}
-文本的变化{type: 'TEXT', text: 1}
-当节点类型相同时，去看一下属性是否相同，产生一个属性的补丁包{type: 'ATTR', attr: {class: 'list-group'}}
-节点类型不相同，直接采用替换模式{type: 'REPLACE', newNode}
+react diff策略
+
+(1)Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。
+(2)拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结构。
+(3)对于同一层级的一组子节点，它们可以通过唯一 id 进行区分。
+分析：
+(1)React 只会简单的考虑同层级节点的位置变换，而对于不同层级的节点，只有创建和删除操作。
+所以，保持稳定的 DOM 结构会有助于性能的提升。
+(2)比较同层的两个组件，同一类型，就比较子节点，不同类型，直接进行删除替换；
+   A          A
+ B    C    G     C
+D E      D  E 
+比如B节点与G节点，节点类型不同，整个节点和子树都会替换；
+(3)elemnt diff
+同层节点有三种diff操作，插入，移动，删除；
+判断节点列表差异的时候，移动这一步，没有唯一key的情况下：
+通过判断同一位置元素是否相等，不等就删除或插入，操作繁杂低效；
+优化：通过给同层节点添加唯一key，通过新老列表是否有相同key，有就进行移动操作，
+通过相同key的老旧位置，生成一个移动方案；
+如果没有key，就无法得到最优的移动方案，增加了损耗，所以代码中子节点一定要有唯一key；
 ```
+
