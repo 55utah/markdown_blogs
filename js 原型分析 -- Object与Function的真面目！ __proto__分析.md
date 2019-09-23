@@ -1,0 +1,48 @@
+#### js 原型分析 -- Object与Function的真面目！ __proto__分析
+
+1.Object与Function
+```
+首先，Function是JavaScript一个特殊的构造函数，在JS中，每一个函数都是其对象（Object也是），如下：
+
+Object.prototype处于原型链的顶端，js在Object.prototype基础上生成Function.prototype,Function.prototype这个对象称为空函数，与一般函数对象不同；在Function.prototype基础上，生成了两个构造函数：Function, Object；由此：
+Function.prototype.__proto__ === Object.prototype
+Function.__proto__ === Function.prototype
+Object.__proto__ === Function.prototype
+说明了Function与Object prototype的内部关系；
+另外，
+Function.prototype.prototype === undefined
+Object.prototype作为原型链顶端，Object.prototype.__proto__ === null
+
+```
+2. __proto__ 与原型链遍历
+```
+function Name(){}
+let n = new Name()
+n.__proto__ === Name.prototype
+n.constructor === Name
+
+实例的__proto__指向原型对象，每个对象都将拥有一个__proto__属性；
+
+n.__proto__.__proto__ === Object.prototype
+
+n.__proto__.__proto__.__proto__ === null
+
+需要注意：
+一个构造函数A
+A.prototype.constructor
+A.prototype.__proto__ 
+这两个属性不能忽视；
+
+原型链遍历：
+function instanceofTest(obj, Fn){
+    let proto = Fn.prototype
+    let p = obj.__proto__
+    //遍历对象原型链的方法
+    while(true){
+        if(p === null) return false  //Object.prototype.__proto__ === null
+        if(p === proto) return true
+        p = p.__proto__  //向原型链上一层找
+    }
+}
+```
+
