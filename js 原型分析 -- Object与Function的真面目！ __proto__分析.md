@@ -45,4 +45,17 @@ function instanceofTest(obj, Fn){
     }
 }
 ```
+--更新</br>
+String, Number, Boolean 构造函数的原型链</br>
+```
+这几个构造函数与原型链，基础类型字面量有什么关系呢？
+1. let a = 'abc', b = 12, c = true 字面量实际是String('abc'), Number(12), Boolean(true)
+，方法返回直接量，而new String()这种返回的是对象！
 
+2.String构造函数是继承谁的呢？
+'12'.__proto__ === String.prototype
+'12'.__proto__.__proto__ === Object.prototype
+实际上，String, Number, Boolean构造函数都是继承的Object.
+
+
+```
