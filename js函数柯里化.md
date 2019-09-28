@@ -50,7 +50,7 @@ function _curry(fn, len, ...args){
         if(_args >= len){
             return fn.apply(this, _args)
         }else{
-            return _curry(this, fn, len, ..._args)
+            return _curry(fn, len, ..._args)
         }
     }
 }
