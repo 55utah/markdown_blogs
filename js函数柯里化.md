@@ -56,3 +56,15 @@ function _curry(fn, len, ...args){
 }
 
 ```
+测试
+
+```
+let s = (a, b, c) => console.log(a + b + c)
+let c = curry(s)
+c(1)(2)(3)
+// 6
+c(1)(2,3)
+// 6
+c(1,2,3)
+// 6
+```
