@@ -47,10 +47,10 @@ function curry(fn, len = fn.length){
 function _curry(fn, len, ...args){
     return function(...params){
         let _args = [...args, ...params]
-        if(_args >= len){
+        if(_args.length >= len){
             return fn.apply(this, _args)
         }else{
-            return _curry(fn, len, ..._args)
+            return _curry(fn, len, ..._args)  //注意是_args
         }
     }
 }
