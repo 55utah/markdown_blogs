@@ -1,6 +1,19 @@
 #### promise学习实现
 1. promise
 ```
+(-1)promise的回调可以为异步函数，这样就可以使用await语法执行异步方法了。
+const pro = new Promise(async resolve => {
+   const data = await new Promise(。。。)
+   resolve(data + 1)
+})
+(0)同一个promise，可以多次拿取结果；只有第一次then方法会执行promise回调，后续then会直接返回结果
+同样的await语法也适用
+const pro = new Promise((resolve) => {setTimeout(() => {resolve('12')}, 1000); console.warn('run')})
+pro.then((d) => console.warn(d)) // run 12
+pro.then((d) => console.warn(d)) // 12
+pro.then((d) => console.warn(d)) // 12
+const s = await pro // 12
+。。。
 (1)一旦状态改变，就不会再变;
 (2)注意，调用resolve或reject并不会终结 Promise 的参数函数的执行。
 new Promise((resolve, reject) => {
