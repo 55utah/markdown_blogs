@@ -6,6 +6,9 @@
 （1）解析html，获取HTMLdocument对象，然后就可以像处理
 const parser = new DOMParser()
 const doc = parser.parseFromString(html, 'text/html')
+// 获取document下所有的图片元素，可以这样做
+doc.querySelectorAll('img')
+
 （2）解析svg图片
 doc = parser.parseFromString(stringContainingXMLSource, "image/svg+xml");
 // 返回一个 SVGDocument 对象，同时也是一个 Document 对象。
