@@ -11,3 +11,11 @@ flex: 1；
 </div>
 
 ```
+
+position: fixed 知识 
+`地址：https://developer.mozilla.org/zh-CN/docs/Web/CSS/positionhttps://developer.mozilla.org/zh-CN/docs/Web/CSS/position`
+```
+position: fixed 相对窗口定位
+当元素祖先的 transform, perspective 或 filter 属性非 none 时，容器由视口改为该祖先。
+也就是说，fixed定位是可以相对父元数定位位置的，设置子元素fixed元素宽度100%，也可以成功。
+```
